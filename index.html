@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cartela da Slinda</title>
+<meta name="theme-color" content="#FBF2F9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Slinda">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&display=swap">
+<style>
+/* Layout: one narrow column. Today's card on top, the 28-day blister pack as a 7x4 grid below, small tips at the end. */
+:root {
+  --bg: #FBF2F9;
+  --card: #FFFFFF;
+  --ink: #3A2848;
+  --muted: #7A6689;
+  --line: #E4D4EF;
+  --accent: #D6397A;
+  --on-accent: #FFFFFF;
+  --accent-soft: #FBDCE9;
+  --lilac: #EDE3F8;
+  --sage: #BBD6C4;
+  --sage-ink: #3A6A4E;
+  --font-display: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1D1526; --card: #2A2036; --ink: #F4EAF9; --muted: #BBA9CB; --line: #43365A;
+    --accent: #FF86B3; --on-accent: #2B1020; --accent-soft: #4C2A41; --lilac: #382C4B;
+    --sage: #4F7A62; --sage-ink: #D6EEDF;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1D1526; --card: #2A2036; --ink: #F4EAF9; --muted: #BBA9CB; --line: #43365A;
+  --accent: #FF86B3; --on-accent: #2B1020; --accent-soft: #4C2A41; --lilac: #382C4B;
+  --sage: #4F7A62; --sage-ink: #D6EEDF;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+  padding-block: 20px 32px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+h1, h2 { font-family: var(--font-display); font-weight: 600; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+
+.top { display: flex; align-items: center; gap: 12px; }
+.top svg { flex: none; }
+.top h1 { font-size: 26px; line-height: 1.1; }
+.top .sub { color: var(--muted); font-size: 14px; }
+
+.hero { background: var(--accent-soft); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+.hero h2 { font-size: 30px; line-height: 1.1; }
+.hero .msg { color: var(--ink); }
+.bar { height: 10px; border-radius: 99px; background: var(--card); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.bar-label { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.btn {
+  font: inherit; font-weight: 700; font-size: 17px; cursor: pointer;
+  border: 0; border-radius: 99px; padding: 15px 20px; width: 100%;
+  background: var(--accent); color: var(--on-accent);
+}
+.btn.ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); font-size: 14px; padding: 10px 16px; }
+.btn:focus-visible, .day:focus-visible .pill, .nav:focus-visible, summary:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+.pack { background: var(--card); border-radius: 24px; padding: 18px 14px 16px; display: flex; flex-direction: column; gap: 14px; }
+.pack-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-inline: 4px; }
+.pack-head h2 { font-size: 18px; }
+.pack-head .range { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.nav { font: inherit; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; font-size: 18px; line-height: 1; }
+.nav:disabled { opacity: 0.35; cursor: default; }
+
+.grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px 6px; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: 0; padding: 0; font: inherit; color: var(--ink); cursor: pointer; min-width: 0; }
+.pill {
+  width: 100%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
+  background: var(--card); border: 2px solid var(--line);
+  font-family: var(--font-display); font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;
+}
+.pill svg { width: 58%; height: 58%; }
+.date { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.day.taken .pill { background: var(--accent); border-color: var(--accent); color: var(--on-accent); animation: pop 0.25s ease-out; }
+.day.placebo .pill { background: var(--sage); border-color: var(--sage); color: var(--sage-ink); }
+.day.placebo.taken .pill { background: var(--sage-ink); border-color: var(--sage-ink); color: var(--card); }
+.day.missed .pill { border-style: dashed; border-color: var(--accent); color: var(--accent); }
+.day.today .pill { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.day.today .date { color: var(--accent); font-weight: 700; }
+.day.future { cursor: default; opacity: 0.55; }
+@keyframes pop { 0% { transform: scale(0.82); } 70% { transform: scale(1.08); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .day.taken .pill { animation: none; } }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); padding-inline: 4px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--line); display: inline-block; }
+.dot.a { background: var(--accent); border-color: var(--accent); }
+.dot.s { background: var(--sage); border-color: var(--sage); }
+.dot.m { border: 2px dashed var(--accent); }
+
+.note { background: var(--lilac); border-radius: 16px; padding: 12px 14px; font-size: 14px; }
+.stats { font-size: 15px; padding-inline: 4px; }
+.stats b { font-family: var(--font-display); font-weight: 600; }
+
+details { background: var(--card); border-radius: 18px; padding: 14px 16px; }
+summary { font-family: var(--font-display); font-weight: 600; cursor: pointer; }
+details ul { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.sync { font-size: 12px; color: var(--muted); text-align: center; }
+.foot { font-size: 12px; color: var(--muted); text-align: center; }
+
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;padding-top:max(20px, env(safe-area-inset-top, 0px));padding-bottom:max(32px, env(safe-area-inset-bottom, 0px))}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+(function () {
+  var START = new Date(2026, 10, 12);
+  var DAY = 864e5;
+  var LS_KEY = 'cartela-slinda-v1';
+  var taken = {};
+  var dbc = null;
+  var mode = 'loading';
+  var viewPack = null;
+  var busy = {};
+  var errorMsg = '';
+  var focusKey = null;
+  var app = document.getElementById('app');
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function key(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function dm(d) { return pad(d.getDate()) + '/' + pad(d.getMonth() + 1); }
+  function addDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
+  function today() { var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+  function idxOf(d) { return Math.round((d - START) / DAY); }
+  function hhmm() { var n = new Date(); return pad(n.getHours()) + ':' + pad(n.getMinutes()); }
+  function weekday(d) { return d.toLocaleDateString('pt-BR', { weekday: 'long' }); }
+
+  function loadLocal() {
+    try { var raw = localStorage.getItem(LS_KEY); if (raw) taken = JSON.parse(raw) || {}; } catch (e) {}
+  }
+  function saveLocal() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(taken)); } catch (e) {}
+  }
+
+  var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var LOGO = '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" fill="var(--accent)"/><circle cx="22" cy="22" r="13" fill="var(--card)"/><path d="M13.5 22h17" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/></svg>';
+
+  function render() {
+    var t = today(), tk = key(t), ti = idxOf(t);
+    if (ti < 0) ti = 0;
+    var curPack = Math.floor(ti / 28);
+    if (viewPack === null) viewPack = curPack;
+    var pos = (ti % 28) + 1;
+    var isPlacebo = pos > 24;
+    var doneToday = !!taken[tk];
+    var rec = taken[tk] || {};
+
+    var tomadosPack = 0;
+    for (var i = 0; i < 28; i++) { if (taken[key(addDays(START, curPack * 28 + i))]) tomadosPack++; }
+
+    var total = ti + 1, count = 0, missed = 0, k;
+    for (var j = 0; j <= ti; j++) {
+      k = key(addDays(START, j));
+      if (taken[k]) count++; else if (j < ti) missed++;
+    }
+    var s = doneToday ? ti : ti - 1, streak = 0;
+    while (s >= 0 && taken[key(addDays(START, s))]) { streak++; s--; }
+
+    var h = '';
+    h += '<header class="top">' + LOGO + '<div><h1>Cartela da Slinda</h1><p class="sub">Começou em ' + dm(START) + '/' + START.getFullYear() + '</p></div></header>';
+
+    h += '<section class="hero" aria-label="Hoje">';
+    h += '<p class="eyebrow">' + weekday(t) + ', ' + dm(t) + '</p>';
+    h += '<h2>Dia ' + pos + ' de 28</h2>';
+    if (doneToday) {
+      h += '<p class="msg">Tudo certo por hoje' + (rec.takenAt ? '. Você marcou às ' + rec.takenAt + '.' : '.') + '</p>';
+      h += '<button class="btn ghost" data-act="toggle" data-key="' + tk + '" id="b-' + tk + '">Desmarcar hoje</button>';
+    } else {
+      h += '<p class="msg">' + (isPlacebo ? 'Hoje é o comprimido verde, sem hormônio.' : 'Hoje é o comprimido branco do dia ' + pos + '.') + '</p>';
+      h += '<button class="btn" data-act="toggle" data-key="' + tk + '" id="b-' + tk + '">Já tomei hoje</button>';
+    }
+    h += '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="28" aria-valuenow="' + tomadosPack + '"><i style="width:' + Math.round(tomadosPack / 28 * 100) + '%"></i></div>';
+    h += '<p class="bar-label">' + tomadosPack + ' de 28 marcados nesta cartela</p>';
+    h += '</section>';
+
+    if (missed > 0) {
+      h += '<p class="note">Você tem ' + missed + (missed === 1 ? ' dia sem marcação' : ' dias sem marcação') + '. Se esqueceu o comprimido, confira a bula ou pergunte ao seu médico ou farmacêutico o que fazer. Se já tomou e só não marcou, é só tocar no dia.</p>';
+    }
+
+    var first = addDays(START, viewPack * 28), last = addDays(START, viewPack * 28 + 27);
+    h += '<section class="pack" aria-label="Cartela ' + (viewPack + 1) + '">';
+    h += '<div class="pack-head"><button class="nav" data-act="prev" aria-label="Cartela anterior"' + (viewPack <= 0 ? ' disabled' : '') + '>&#8249;</button>';
+    h += '<div style="text-align:center"><h2>Cartela ' + (viewPack + 1) + '</h2><p class="range">' + dm(first) + ' a ' + dm(last) + '</p></div>';
+    h += '<button class="nav" data-act="next" aria-label="Próxima cartela"' + (viewPack >= curPack + 1 ? ' disabled' : '') + '>&#8250;</button></div>';
+    h += '<div class="grid">';
+    for (var n = 0; n < 28; n++) {
+      var d = addDays(START, viewPack * 28 + n), dk = key(d);
+      var future = d > t, isT = dk === tk, tk2 = !!taken[dk], ph = n >= 24;
+      var cls = 'day' + (tk2 ? ' taken' : '') + (ph ? ' placebo' : '') + (future ? ' future' : '') + (isT ? ' today' : '') + (!tk2 && !future && !isT ? ' missed' : '');
+      var status = tk2 ? 'tomado' : (future ? 'ainda não chegou' : 'não marcado');
+      h += '<button class="' + cls + '" data-act="toggle" data-key="' + dk + '" id="d-' + dk + '"' + (future ? ' disabled' : '') + ' aria-label="Dia ' + (n + 1) + ', ' + dm(d) + (ph ? ', sem hormônio' : '') + ', ' + status + '">';
+      h += '<span class="pill">' + (tk2 ? CHECK : (n + 1)) + '</span><span class="date">' + dm(d) + '</span></button>';
+    }
+    h += '</div>';
+    h += '<div class="legend"><span><i class="dot a"></i>Tomado</span><span><i class="dot s"></i>Verde, sem hormônio</span><span><i class="dot m"></i>Sem marcação</span></div>';
+    h += '</section>';
+
+    h += '<p class="stats"><b>' + count + ' de ' + total + '</b> dias marcados desde o início' + (streak > 1 ? '. Sequência de <b>' + streak + ' dias</b>.' : '.') + '</p>';
+
+    h += '<details><summary>Como não esquecer</summary><ul>';
+    h += '<li>Crie um alarme diário no relógio do celular chamado “Slinda”. Ele toca mesmo no silencioso.</li>';
+    h += '<li>Deixe a cartela perto da escova de dente ou do carregador.</li>';
+    h += '<li>Tome sempre no mesmo horário. A bula permite atraso de até 24 horas.</li>';
+    h += '<li>Ao terminar o dia 28, comece a cartela nova no dia seguinte, sem pausa.</li>';
+    h += '</ul></details>';
+
+    if (errorMsg) h += '<p class="note">' + errorMsg + '</p>';
+    if (mode === 'db') h += '<p class="sync">Suas marcações ficam salvas na sua conta.</p>';
+    else if (mode === 'local') h += '<p class="sync">Suas marcações ficam salvas só neste aparelho.</p>';
+    else if (mode === 'slow') h += '<p class="sync">Ainda não consegui carregar as marcações salvas. Elas aparecem assim que a conexão voltar.</p>';
+    h += '<p class="foot">Dúvidas sobre horário ou esquecimento: fale com seu médico ou farmacêutico.</p>';
+
+    app.innerHTML = h;
+    if (focusKey) {
+      var el = document.getElementById('d-' + focusKey) || document.getElementById('b-' + focusKey);
+      if (el && !el.disabled) el.focus();
+    }
+  }
+
+  function toggle(k) {
+    if (busy[k]) return;
+    busy[k] = true;
+    errorMsg = '';
+    var on = !taken[k];
+    var rec = { takenAt: k === key(today()) ? hhmm() : '' };
+    var p;
+    if (dbc) {
+      p = on ? dbc.doc(k).set(rec) : dbc.doc(k).delete();
+    } else {
+      if (on) taken[k] = rec; else delete taken[k];
+      saveLocal();
+      p = Promise.resolve();
+      render();
+    }
+    p.catch(function () {
+      errorMsg = 'Não consegui salvar agora. Tente tocar de novo em instantes.';
+      render();
+    }).then(function () { busy[k] = false; });
+  }
+
+  app.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]');
+    if (!b || b.disabled) return;
+    var act = b.getAttribute('data-act');
+    if (act === 'toggle') { focusKey = b.getAttribute('data-key'); toggle(focusKey); }
+    else if (act === 'prev') { viewPack = Math.max(0, viewPack - 1); focusKey = null; render(); }
+    else if (act === 'next') { viewPack = viewPack + 1; focusKey = null; render(); }
+  });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) render(); });
+
+  function startLocal() { mode = 'local'; loadLocal(); render(); }
+
+  render();
+
+  var cl = window.claude;
+  if (!cl || !cl.use) { startLocal(); return; }
+  var timer = setTimeout(function () { if (mode === 'loading') { mode = 'slow'; render(); } }, 10000);
+  Promise.all([cl.use('db'), cl.use('user')]).then(function (r) {
+    var dbm = r[0], user = r[1];
+    return (user ? user.id() : Promise.resolve(null)).then(function (uid) {
+      if (!dbm || !uid) { clearTimeout(timer); startLocal(); return; }
+      dbc = dbm.collection('data/users/' + uid);
+      dbc.onSnapshot(function (snap) {
+        var m = {};
+        snap.docs.forEach(function (doc) {
+          if (/^\d{4}-\d{2}-\d{2}$/.test(doc.id)) m[doc.id] = doc.data() || {};
+        });
+        taken = m;
+        if (!snap.metadata.fromCache || mode !== 'loading') clearTimeout(timer);
+        mode = 'db';
+        render();
+      }, function () {
+        clearTimeout(timer);
+        dbc = null;
+        startLocal();
+      });
+    });
+  }).catch(function () { clearTimeout(timer); startLocal(); });
+})();
+</script>
+
+</body>
+</html>
